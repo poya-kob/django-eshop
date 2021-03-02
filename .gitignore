@@ -143,6 +143,6 @@ eshop.zip
 db.txt
 
 static_cdn/
-assets/
+
 
 passenger_wsgi.py
