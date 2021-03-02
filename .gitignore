@@ -142,7 +142,7 @@ cython_debug/
 eshop.zip
 db.txt
 
-static_cdn/
-
+static_cdn/media_root/
+eshop/settings.py
 
 passenger_wsgi.py
