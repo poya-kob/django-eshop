@@ -141,8 +141,8 @@ cython_debug/
 #my ignore files
 eshop.zip
 db.txt
-pips.txt
+
 static_cdn/
 assets/
-manage.py
-eshop/settings.py
+
+passenger_wsgi.py
