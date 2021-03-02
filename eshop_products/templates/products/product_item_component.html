@@ -1,0 +1,35 @@
+<div class="col-sm-4 pull-right">
+    <div class="product-image-wrapper">
+        <div class="single-products">
+            <div class="productinfo text-center">
+                <img src="{{ obj.image.url }}" alt=""/>
+                {% if obj.price == 0 %}
+                    <h2>رایگان</h2>
+                {% else %}
+                    <h2>{{ obj.price }} ريال</h2>
+                {% endif %}
+                <p>{{ obj.title }}</p>
+                <a href="#" class="btn btn-default add-to-cart"><i
+                        class="fa fa-shopping-cart"></i>افزودن به سبـد خریـد</a>
+            </div>
+            <div class="product-overlay">
+                <div class="overlay-content">
+                    {% if obj.price == 0 %}
+                        <h2>رایگان</h2>
+                    {% else %}
+                        <h2>{{ obj.price }} ريال</h2>
+                    {% endif %}
+                    <p>{{ obj.title }}</p>
+                    <a href="#" class="btn btn-default add-to-cart"><i
+                            class="fa fa-shopping-cart"></i>افزودن به سبـد خریـد</a>
+                </div>
+            </div>
+        </div>
+        <div class="choose">
+            <ul class="nav nav-pills nav-justified">
+                <li><a href="/products/{{ obj.id }}/{{ obj.title }}"><i class="fa fa-plus-square"></i>مشاهده</a></li>
+                <li><a href=""><i class="fa fa-plus-square"></i>مقایسه</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
