@@ -22,8 +22,8 @@ def footer(request, *args, **kwargs):
 
 def home_page(request):
     slider = Slider.objects.all()
-    most_visited_products = Product.objects.order_by('-visit_count').all()[:8]
-    last_products = Product.objects.order_by('-id').all()[:8]
+    most_visited_products = Product.objects.order_by('-visit_count').filter(active=True)[:8]
+    last_products = Product.objects.order_by('-id').filter(active=True)[:8]
 
     context = {
         "sliders": slider,

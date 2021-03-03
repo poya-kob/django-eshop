@@ -35,7 +35,7 @@ class ProductManager(models.Manager):
         return self.get_queryset().filter(category__name__iexact=category_name, active=True)
 
     def get_product_by_id(self, productid):
-        qs = self.get_queryset().filter(id=productid)
+        qs = self.get_queryset().filter(id=productid, active=True)
 
         if qs.count() == 1:
             return qs.first()
