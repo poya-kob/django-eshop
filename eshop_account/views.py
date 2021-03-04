@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from eshop_products.models import Product
+from .models import Favorite
 
 
 # Create your views here.
@@ -44,3 +47,16 @@ def register_page(request):
 def logout_page(request):
     logout(request)
     return redirect("/")
+
+
+@login_required(login_url='/login')
+def favorite_page(request):
+    user_favorites = Favorite.objects.values_list('favorite_product').filter(
+        current_user_id__exact=request.user.id)
+    page_obj = Product.objects.filter(pk__in=user_favorites)
+    # print(user_favorites)
+    context = {
+        'page_obj': page_obj
+    }
+
+    return render(request, 'account/user_favorite_products.html', context)
