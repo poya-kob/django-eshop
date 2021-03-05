@@ -28,7 +28,7 @@ def home_page(request):
     context = {
         "sliders": slider,
         "most_visited_products": gallery_grouper(4, most_visited_products),
-        "last_products": gallery_grouper(4, last_products)
+        "last_products": gallery_grouper(4, last_products),
 
     }
     return render(request, "home_page.html", context)

@@ -60,3 +60,12 @@ def favorite_page(request):
     }
 
     return render(request, 'account/user_favorite_products.html', context)
+
+
+@login_required(login_url='/login')
+def add_user_favorite(request):
+    favorite = Favorite.objects.get_queryset().filter(current_user_id__exact=request.user.id,
+                                                      favorite_product__exact=request.GET.get('id')).first()
+    if request.GET.get('id') and favorite is None:
+        Favorite.objects.create(current_user_id=request.user.id, favorite_product=request.GET.get('id'))
+    return redirect('/')
