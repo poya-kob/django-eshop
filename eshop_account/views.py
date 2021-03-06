@@ -64,8 +64,18 @@ def favorite_page(request):
 
 @login_required(login_url='/login')
 def add_user_favorite(request):
+    # print(request.GET.get('id'))
     favorite = Favorite.objects.get_queryset().filter(current_user_id__exact=request.user.id,
                                                       favorite_product__exact=request.GET.get('id')).first()
     if request.GET.get('id') and favorite is None:
         Favorite.objects.create(current_user_id=request.user.id, favorite_product=request.GET.get('id'))
-    return redirect('/')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='/login')
+def del_user_favorite(request):
+    # print(request.META.get('HTTP_REFERER'))
+    Favorite.objects.filter(favorite_product__exact=request.GET.get('id'),
+                            current_user_id__exact=request.user.id).delete()
+
+    return redirect(request.META.get('HTTP_REFERER'))

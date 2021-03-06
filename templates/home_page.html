@@ -148,16 +148,36 @@
                                                         <div class="choose">
                                                             <ul class="nav nav-pills nav-justified">
                                                                 <li>
-                                                                    <form method="get" action="/add-user-favorite">
-                                                                        {% csrf_token %}
-                                                                        <input type="hidden" value="{{ product.id }}" name="id">
-                                                                        <button type="submit" class="btn btn-success">
+                                                                    {% if product.id in favorite_list %}
+                                                                        <form id="{{ forloop.counter }}" method="get"
+                                                                              action="/del-user-favorite">
+                                                                            <input type="hidden"
+                                                                                   value="{{ product.id }}"
+                                                                                   name="id">
 
-                                                                            <i class="fa fa-plus-square"></i> لیست علاقه
-                                                                            مندی ها
+                                                                            <a href="javascript:;"
+                                                                               onclick="document.getElementById('{{ forloop.counter }}').submit();">
 
-                                                                        </button>
-                                                                    </form>
+                                                                                <i class="fa fa-heart fa-lg"></i>
+
+                                                                            </a>
+                                                                        </form>
+                                                                    {% else %}
+                                                                        <form id="{{ forloop.counter }}" method="get"
+                                                                              action="/add-user-favorite">
+                                                                            <input type="hidden"
+                                                                                   value="{{ product.id }}"
+                                                                                   name="id">
+
+                                                                            <a href="javascript:;"
+                                                                               onclick="document.getElementById('{{ forloop.counter }}').submit();">
+
+                                                                                <i class="fa fa-heart-o fa-lg"></i>
+
+                                                                            </a>
+                                                                        </form>
+                                                                    {% endif %}
+
                                                                 </li>
                                                                 <li><a href="#"><i class="fa fa-plus-square"></i>مقایسه</a>
                                                                 </li>

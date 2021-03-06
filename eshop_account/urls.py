@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_page, register_page, logout_page, favorite_page, add_user_favorite
+from .views import login_page, register_page, logout_page, favorite_page, add_user_favorite, del_user_favorite
 
 urlpatterns = [
     path('login', login_page),
@@ -7,4 +7,6 @@ urlpatterns = [
     path('register', register_page),
     path('favorites', favorite_page),
     path('add-user-favorite', add_user_favorite),
+    path('del-user-favorite', del_user_favorite),
+
 ]
