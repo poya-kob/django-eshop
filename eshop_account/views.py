@@ -54,6 +54,7 @@ def favorite_page(request):
     user_favorites = Favorite.objects.values_list('favorite_product').filter(
         current_user_id__exact=request.user.id)
     page_obj = Product.objects.filter(pk__in=user_favorites)
+    print(page_obj.count())
     # print(user_favorites)
     context = {
         'page_obj': page_obj

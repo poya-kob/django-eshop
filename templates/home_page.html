@@ -147,40 +147,41 @@
                                                         </div>
                                                         <div class="choose">
                                                             <ul class="nav nav-pills nav-justified">
+                                                            <li><a href="/products/{{ product.id }}/{{ product.title }}"><i class="fa fa-plus-square"></i>مشاهده</a>
+                                                                </li>
                                                                 <li>
                                                                     {% if product.id in favorite_list %}
-                                                                        <form id="{{ forloop.counter }}" method="get"
+                                                                        <form id="{{ product.id }}" method="get"
                                                                               action="/del-user-favorite">
                                                                             <input type="hidden"
                                                                                    value="{{ product.id }}"
                                                                                    name="id">
 
                                                                             <a href="javascript:;"
-                                                                               onclick="document.getElementById('{{ forloop.counter }}').submit();">
+                                                                               onclick="document.getElementById('{{ product.id }}').submit();">
 
-                                                                                <i class="fa fa-heart fa-lg"></i>
+                                                                                <i class="fa fa-heart fa-lg pull-left"></i>
 
                                                                             </a>
                                                                         </form>
                                                                     {% else %}
-                                                                        <form id="{{ forloop.counter }}" method="get"
+                                                                        <form id="{{ product.id }}" method="get"
                                                                               action="/add-user-favorite">
                                                                             <input type="hidden"
                                                                                    value="{{ product.id }}"
                                                                                    name="id">
 
                                                                             <a href="javascript:;"
-                                                                               onclick="document.getElementById('{{ forloop.counter }}').submit();">
+                                                                               onclick="document.getElementById('{{ product.id }}').submit();">
 
-                                                                                <i class="fa fa-heart-o fa-lg"></i>
+                                                                                <i class="fa fa-heart-o fa-lg pull-left"></i>
 
                                                                             </a>
                                                                         </form>
                                                                     {% endif %}
 
                                                                 </li>
-                                                                <li><a href="#"><i class="fa fa-plus-square"></i>مقایسه</a>
-                                                                </li>
+
                                                             </ul>
                                                         </div>
                                                     </div>
