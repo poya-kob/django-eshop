@@ -19,6 +19,25 @@ class ProductsList(ListView):
     def get_queryset(self):
         return Product.objects.get_active_products()
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user_favorite_list = Favorite.objects.values_list('favorite_product').filter(
+            current_user_id__exact=self.request.user.id)
+        user_favorite_product = []
+        for Tuple in list(user_favorite_list):
+            user_favorite_product.append(Tuple[0])
+        context['favorite_list'] = user_favorite_product
+        return context
+
+
+# def products_list(request):
+#     product = Product.objects.get_active_products()
+#     user_favorite_list = Favorite.objects.values_list('favorite_product').filter(
+#         current_user_id__exact=request.user.id)
+#
+#     paginate_by = 4
+
 
 class ProductsListByCategory(ListView):
     template_name = 'products/products_list.html'
@@ -42,7 +61,7 @@ def product_detail(request, *args, **kwargs):
     new_order_form = UserNewOrderForm(request.POST or None, initial={'product_id': selected_product_id})
     user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
                                                  favorite_product__exact=selected_product_id).exists()
-    print(user_favorite_list)
+    # print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
     got_product.visit_count += 1
     got_product.save()
