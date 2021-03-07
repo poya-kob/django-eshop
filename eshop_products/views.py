@@ -8,6 +8,8 @@ from .models import Product, ProductGallery
 from django.http import Http404
 from eshop_products_category.models import ProductsCategory
 
+from eshop_account.models import Favorite
+
 
 # Create your views here.
 class ProductsList(ListView):
@@ -16,6 +18,25 @@ class ProductsList(ListView):
 
     def get_queryset(self):
         return Product.objects.get_active_products()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user_favorite_list = Favorite.objects.values_list('favorite_product').filter(
+            current_user_id__exact=self.request.user.id)
+        user_favorite_product = []
+        for Tuple in list(user_favorite_list):
+            user_favorite_product.append(Tuple[0])
+        context['favorite_list'] = user_favorite_product
+        return context
+
+
+# def products_list(request):
+#     product = Product.objects.get_active_products()
+#     user_favorite_list = Favorite.objects.values_list('favorite_product').filter(
+#         current_user_id__exact=request.user.id)
+#
+#     paginate_by = 4
 
 
 class ProductsListByCategory(ListView):
@@ -38,7 +59,9 @@ def gallery_grouper(n, iterable):
 def product_detail(request, *args, **kwargs):
     selected_product_id = kwargs['productid']
     new_order_form = UserNewOrderForm(request.POST or None, initial={'product_id': selected_product_id})
-
+    user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
+                                                 favorite_product__exact=selected_product_id).exists()
+    # print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
     got_product.visit_count += 1
     got_product.save()
@@ -46,7 +69,7 @@ def product_detail(request, *args, **kwargs):
     if got_product is None or not got_product.active:
         raise Http404('محصول مورد نظر یافت نشد.')
 
-    related_product = Product.objects.get_queryset().filter(category__product=got_product).distinct()
+    related_product = Product.objects.get_queryset().filter(category__product=got_product, active=True).distinct()
     grouped_related_product = list(gallery_grouper(3, related_product))
     # print(grouped_related_product)
     galleries = ProductGallery.objects.filter(product_id=selected_product_id)
@@ -56,7 +79,8 @@ def product_detail(request, *args, **kwargs):
         'object': got_product,
         'gallery': grouped_gallery,
         'related_product': grouped_related_product,
-        'new_order_form': new_order_form
+        'new_order_form': new_order_form,
+        'favorite_list': user_favorite_list
     }
 
     return render(request, 'products/product_detail.html', context)

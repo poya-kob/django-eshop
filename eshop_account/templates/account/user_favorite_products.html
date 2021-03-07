@@ -1,0 +1,111 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{#{% load render_partial %}#}
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-sm-9">
+                    <div class="features_items"><!--features_items-->
+                        <h2 class="title text-center">لیست علاقه مندی ها</h2>
+                        {% if page_obj.count == 0 %}
+                            <div class="alert alert-warning">
+                                <p>
+                                    <b> هیچ محصولی در لیست علاقه مندی های شما وجود ندارد.</b>
+                                </p>
+                            </div>
+                        {% else %}
+                            {% for product in page_obj %}
+                                {#                            {% include 'products/product_item_component.html' with obj=obj %}#}
+                                <div class="col-sm-3 pull-right">
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <img src="{{ product.image.url }}"
+                                                     alt="{{ product.title }}"/>
+                                                <h2>{{ product.price }} تومان</h2>
+                                                <p>{{ product.title }}</p>
+                                                <a href="/products/{{ product.id }}/{{ product.title }}"
+                                                   class="btn btn-default add-to-cart"><i
+                                                        class="fa fa-shopping-cart"></i>افزودن به سبـد
+                                                    خریـد</a>
+                                            </div>
+                                            <div class="product-overlay">
+                                                <div class="overlay-content">
+                                                    <h2>{{ product.price }} تومان</h2>
+                                                    <p>{{ product.description |slice:150 }} ...</p>
+                                                    <a href="/products/{{ product.id }}/{{ product.title }}"
+                                                       class="btn btn-default add-to-cart"><i
+                                                            class="fa fa-shopping-cart"></i>افزودن به
+                                                        سبـد خریـد</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="choose">
+                                            <ul class="nav nav-pills nav-justified">
+                                                 <li><a href="/products/{{ product.id }}/{{ product.title }}"><i class="fa fa-plus-square"></i>مشاهده</a>
+                                                </li>
+                                                <li>
+
+                                                    <form id="{{ forloop.counter }}" method="get"
+                                                          action="/del-user-favorite">
+                                                        <input type="hidden"
+                                                               value="{{ product.id }}"
+                                                               name="id">
+
+                                                        <a href="javascript:;"
+                                                           onclick="document.getElementById('{{ forloop.counter }}').submit();">
+
+                                                            <i class="fa fa-heart fa-lg pull-left"></i>
+
+                                                        </a>
+                                                    </form>
+
+
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="clearfix"></div><!--pagination-->
+                            <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}">قبلی</a></li>
+
+                            {% endif %}
+                            {% for page in paginator.page_range %}
+                                {% if page == page_obj.number %}
+                                    <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
+
+                            {% endif %}
+                        {% endif %}
+                        </ul><!--pagination-->
+                    </div><!--features_items-->
+                </div>
+
+                {#                <div class="col-sm-3">#}
+                {#                    <div class="left-sidebar">#}
+                {#                        {% render_partial 'product_categories_partial' %}#}
+                {##}
+                {#                        <div class="shipping text-center"><!--shipping-->#}
+                {#                            <img src="{% static 'images/home/shipping.jpg' %}" alt=""/>#}
+                {#                        </div><!--/shipping-->#}
+                {##}
+                {#                    </div>#}
+                {#                </div>#}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

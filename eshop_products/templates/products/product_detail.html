@@ -74,27 +74,41 @@
                                     <p><b>برنـد :</b> برنـد </p>
                                 </div>
                                 <span class="socials-share share">
-									<ul>
-										<a href="#">
-											<li>
-												<label>بلـه</label>
-												<img src="{% static 'images/product-details/Bale.png' %}">
-											</li>
-										</a>
-										<a href="#">
-											<li>
-												<label>سـروش</label>
-												<img src="{% static 'images/product-details/Soroush.png' %}">
-											</li>
-										</a>
-										<a href="#">
-											<li>
-												<label>اینستاگرام</label>
-												<img src="{% static 'images/product-details/Instagram.png' %}">
-											</li>
-										</a>
-										<li><img src="{% static 'images/product-details/rating.png' %}" alt=""></li>
-									</ul>
+                                     <ul class="nav nav-pills nav-justified">
+                                         <li>
+                                             {% if favorite_list %}
+                                                 <form id="{{ object.id }}" method="get"
+                                                       action="/del-user-favorite">
+                                                     <input type="hidden"
+                                                            value="{{ object.id }}"
+                                                            name="id">
+
+                                                     <a href="javascript:;"
+                                                        onclick="document.getElementById('{{ object.id }}').submit();">
+
+                                                         <i class="fa fa-heart fa-3x"></i>
+
+                                                     </a>
+                                                 </form>
+                                             {% else %}
+                                                 <form id="{{ object.id }}" method="get"
+                                                       action="/add-user-favorite">
+                                                     <input type="hidden"
+                                                            value="{{ object.id }}"
+                                                            name="id">
+
+                                                     <a href="javascript:;"
+                                                        onclick="document.getElementById('{{ object.id }}').submit();">
+
+                                                         <i class="fa fa-heart-o fa-3x"></i>
+
+                                                     </a>
+                                                 </form>
+                                             {% endif %}
+
+                                         </li>
+
+                                     </ul>
 								</span>
 
                             </div><!--/product-information-->
@@ -113,9 +127,9 @@
                         <div class="tab-content">
                             <div class="tab-pane fade" id="details">
                                 <div class="col-sm-12">
-                                    <p>
+
                                         {{ object.description }}
-                                    </p>
+
                                 </div>
 
                             </div>
