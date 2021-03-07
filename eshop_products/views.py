@@ -40,6 +40,9 @@ def gallery_grouper(n, iterable):
 def product_detail(request, *args, **kwargs):
     selected_product_id = kwargs['productid']
     new_order_form = UserNewOrderForm(request.POST or None, initial={'product_id': selected_product_id})
+    user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
+                                                 favorite_product__exact=selected_product_id).exists()
+    print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
     got_product.visit_count += 1
     got_product.save()
@@ -57,7 +60,8 @@ def product_detail(request, *args, **kwargs):
         'object': got_product,
         'gallery': grouped_gallery,
         'related_product': grouped_related_product,
-        'new_order_form': new_order_form
+        'new_order_form': new_order_form,
+        'favorite_list': user_favorite_list
     }
 
     return render(request, 'products/product_detail.html', context)

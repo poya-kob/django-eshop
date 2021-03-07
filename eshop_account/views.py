@@ -22,7 +22,7 @@ def login_page(request):
         user = authenticate(request, password=password, username=username)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return redirect(request.META.get('HTTP_REFERER'))
     return render(request, 'account/login.html', context)
 
 
