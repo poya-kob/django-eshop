@@ -26,6 +26,8 @@ urlpatterns = [
     path('', include('eshop_products.urls')),
     path('', include('eshop_contact.urls')),
     path('', include('eshop_order.urls')),
+    path('', include('eshop_blog.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('header', header, name='header'),
     path('footer', footer, name='footer'),
 
