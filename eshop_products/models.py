@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Q
 from eshop_products_category.models import ProductsCategory
 from eshop.utils import upload_image_path, get_file_name
+from django.contrib.auth.models import User
 
 
 # import os
@@ -90,6 +91,21 @@ class ProductGallery(models.Model):
     class Meta:
         verbose_name_plural = 'گالری ها'
         verbose_name = 'گالری'
+
+    def __str__(self):
+        return self.title
+
+
+class UserComment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="محصول مربوطه")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر مربوطه")
+    title = models.CharField(max_length=150, verbose_name="عنوان دیدگاه")
+    text = models.TextField(verbose_name="متن دیدگاه کاربر")
+    date = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد دیدگاه")
+
+    class Meta:
+        verbose_name_plural = "دیدگاه"
+        verbose_name = "دیدگاه"
 
     def __str__(self):
         return self.title
