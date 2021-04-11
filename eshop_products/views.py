@@ -1,10 +1,10 @@
 import itertools
-
+from .forms import CommentForm
 from django.shortcuts import render
 from django.views.generic import ListView
 
 from eshop_order.forms import UserNewOrderForm
-from .models import Product, ProductGallery
+from .models import Product, ProductGallery, UserComment
 from django.http import Http404
 from eshop_products_category.models import ProductsCategory
 
@@ -61,6 +61,13 @@ def product_detail(request, *args, **kwargs):
     new_order_form = UserNewOrderForm(request.POST or None, initial={'product_id': selected_product_id})
     user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
                                                  favorite_product__exact=selected_product_id).exists()
+
+    comment_form = CommentForm(request.POST or None)
+    if comment_form.is_valid():
+        UserComment.objects.create(user_id=request.user.id, product_id=selected_product_id,
+                                   title=comment_form.cleaned_data.get('title'),
+                                   text=comment_form.cleaned_data.get('text'))
+
     # print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
     got_product.visit_count += 1
@@ -80,7 +87,8 @@ def product_detail(request, *args, **kwargs):
         'gallery': grouped_gallery,
         'related_product': grouped_related_product,
         'new_order_form': new_order_form,
-        'favorite_list': user_favorite_list
+        'favorite_list': user_favorite_list,
+        'comment_form':comment_form
     }
 
     return render(request, 'products/product_detail.html', context)
