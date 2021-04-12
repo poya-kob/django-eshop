@@ -101,6 +101,7 @@ class UserComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر مربوطه")
     title = models.CharField(max_length=150, verbose_name="عنوان دیدگاه")
     text = models.TextField(verbose_name="متن دیدگاه کاربر")
+    active = models.BooleanField(default=False, verbose_name="فعال/غیرفعال")
     date = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد دیدگاه")
 
     class Meta:

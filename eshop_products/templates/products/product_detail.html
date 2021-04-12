@@ -119,7 +119,8 @@
                         <div class="col-sm-12">
                             <ul class="nav nav-tabs">
                                 <li><a href="#details" data-toggle="tab">جزئیات</a></li>
-                                <li class="active"><a href="#reviews" data-toggle="tab">نظرات (5)</a></li>
+                                <li class="active"><a href="#reviews" data-toggle="tab">نظرات ({{ total_comments }})</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="tab-content">
@@ -135,21 +136,33 @@
 
                             <div class="tab-pane fade active in" id="reviews">
                                 <div class="col-sm-12">
-                                    <ul>
-                                        <li><a href=""><i class="fa fa-user"></i>مشتـری 1</a></li>
-                                        <li><a href=""><i class="fa fa-clock-o"></i>12:41 ب . ظ</a></li>
-                                        <li><a href=""><i class="fa fa-calendar-o"></i>29 تیـر 1397</a></li>
-                                    </ul>
-                                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده ازلورملورم
-                                        ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان
-                                        گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و
-                                        برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                                        کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان
-                                        جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه
-                                        ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.</p>
-                                    <p><strong>نظـر خود را بنویسیـد</strong></p>
-                                    <hr>
-                                    {% if request.user.is_authenticated %}
+                                    {% if user_comments %}
+                                        {% for comment in user_comments %}
+                                            <ul>
+                                                <li><a href=""><i
+                                                        class="fa fa-user"></i>{{ comment.user.get_full_name }}</a></li>
+                                                <li><a href=""><i
+                                                        class="fa fa-clock-o"></i>{{ comment.date|date:'g:i  a' }}</a>
+                                                </li>
+                                                <li><a href=""><i
+                                                        class="fa fa-calendar-o"></i>{{ comment.date|date:'j - b - Y' }}
+                                                </a></li>
+                                            </ul>
+                                            <p><b>{{ comment.title }}</b></p>
+                                            <p>{{ comment.text }}</p>
+                                            <hr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="alert alert-danger" role="alert">
+                                            هیچ دیدگاهی برای این محصول ثبت نشده
+                                        </div>
+                                    {% endif %}
+                                    {% if user_commented %}
+                                        <div class="alert alert-danger" role="alert">
+                                            شما قبلا نر خود را برای این محصول ثبت نموده اید.
+                                        </div>
+                                    {% elif request.user.is_authenticated %}
+                                        <p><strong>نظـر خود را بنویسیـد</strong></p>
                                         <form method="post">
                                             {% csrf_token %}
 
@@ -162,9 +175,10 @@
                                                 ارسـال
                                             </button>
                                         </form>
+
                                     {% else %}
                                         <div class="alert alert-danger" role="alert">
-                                            برای ثبت دیدگاه خد لطفا وارد شوید.
+                                            برای ثبت دیدگاه خود لطفا وارد شوید.
                                         </div>
                                     {% endif %}
                                 </div>

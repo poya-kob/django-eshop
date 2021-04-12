@@ -61,13 +61,18 @@ def product_detail(request, *args, **kwargs):
     new_order_form = UserNewOrderForm(request.POST or None, initial={'product_id': selected_product_id})
     user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
                                                  favorite_product__exact=selected_product_id).exists()
-
+    # comment part
+    user_commented = UserComment.objects.filter(active=True, user_id=request.user.id).__bool__()
+    user_comments = UserComment.objects.order_by('-id').filter(active=True, product_id=selected_product_id)[:10]
     comment_form = CommentForm(request.POST or None)
-    if comment_form.is_valid():
-        UserComment.objects.create(user_id=request.user.id, product_id=selected_product_id,
-                                   title=comment_form.cleaned_data.get('title'),
-                                   text=comment_form.cleaned_data.get('text'))
+    if request.user.is_authenticated and not user_commented:
+        if comment_form.is_valid():
+            UserComment.objects.create(user_id=request.user.id, product_id=selected_product_id,
+                                       title=comment_form.cleaned_data.get('title'),
+                                       text=comment_form.cleaned_data.get('text'))
+    total_comments = UserComment.objects.filter(active=True, product_id=selected_product_id).count()
 
+    # comment part
     # print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
     got_product.visit_count += 1
@@ -88,7 +93,10 @@ def product_detail(request, *args, **kwargs):
         'related_product': grouped_related_product,
         'new_order_form': new_order_form,
         'favorite_list': user_favorite_list,
-        'comment_form':comment_form
+        'comment_form': comment_form,
+        'user_comments': user_comments,
+        'total_comments': total_comments,
+        'user_commented': user_commented
     }
 
     return render(request, 'products/product_detail.html', context)
