@@ -2,13 +2,12 @@ import itertools
 from .forms import CommentForm
 from django.shortcuts import render
 from django.views.generic import ListView
-
 from eshop_order.forms import UserNewOrderForm
 from .models import Product, ProductGallery, UserComment
 from django.http import Http404
 from eshop_products_category.models import ProductsCategory
-
 from eshop_account.models import Favorite
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -62,8 +61,9 @@ def product_detail(request, *args, **kwargs):
     user_favorite_list = Favorite.objects.filter(current_user_id__exact=request.user.id,
                                                  favorite_product__exact=selected_product_id).exists()
     # comment part
-    user_commented = UserComment.objects.filter(active=True, user_id=request.user.id).__bool__()
-    user_comments = UserComment.objects.order_by('-id').filter(active=True, product_id=selected_product_id)[:10]
+    user_commented = UserComment.objects.filter(active=True, user_id=request.user.id,
+                                                product_id=selected_product_id).__bool__()
+    user_comments = UserComment.objects.order_by('-id').filter(active=True, product_id=selected_product_id)
     comment_form = CommentForm(request.POST or None)
     if request.user.is_authenticated and not user_commented:
         if comment_form.is_valid():
@@ -71,7 +71,9 @@ def product_detail(request, *args, **kwargs):
                                        title=comment_form.cleaned_data.get('title'),
                                        text=comment_form.cleaned_data.get('text'))
     total_comments = UserComment.objects.filter(active=True, product_id=selected_product_id).count()
-
+    paginator = Paginator(user_comments, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     # comment part
     # print(user_favorite_list)
     got_product: Product = Product.objects.get_product_by_id(selected_product_id)
@@ -96,7 +98,9 @@ def product_detail(request, *args, **kwargs):
         'comment_form': comment_form,
         'user_comments': user_comments,
         'total_comments': total_comments,
-        'user_commented': user_commented
+        'user_commented': user_commented,
+        'paginator': page_obj,
+        'paginator_range': paginator.page_range
     }
 
     return render(request, 'products/product_detail.html', context)

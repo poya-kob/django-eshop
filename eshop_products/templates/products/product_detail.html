@@ -6,7 +6,6 @@
     <section>
         <div class="container">
             <div class="row">
-
                 <div class="col-sm-9 padding-right">
                     <div class="product-details"><!--product-details-->
                         <div class="col-sm-5">
@@ -15,7 +14,6 @@
                                 <h3>بزرگنمایـی</h3>
                             </div>
                             <div id="similar-product" class="carousel slide" data-ride="carousel">
-
                                 <!-- Wrapper for slides -->
                                 <div class="carousel-inner">
                                     {% for gallerylist in gallery %}
@@ -25,12 +23,9 @@
                                                                 alt="{{ gallery.title }}"
                                                                 style="width: 80px;height: 80px"></a>
                                             {% endfor %}
-
                                         </div>
                                     {% endfor %}
-
                                 </div>
-
                                 <!-- Controls -->
                                 <a class="right item-control" href="#similar-product" data-slide="next">
                                     <i class="fa fa-angle-right"></i>
@@ -39,7 +34,6 @@
                                     <i class="fa fa-angle-left"></i>
                                 </a>
                             </div>
-
                         </div>
                         <div class="col-sm-7">
                             <div class="product-information"><!--/product-information-->
@@ -57,15 +51,12 @@
                                             {% csrf_token %}
                                             {{ new_order_form.product_id }}
                                             <label>تعداد :</label>
-
                                             {{ new_order_form.count }}
 										    <button type="submit" class="btn btn-fefault cart">
 											<i class="fa fa-shopping-cart"></i>
 											افـزودن به سبـد خریـد
 										</button>
-
                                         </form>
-
 									</span>
                                 </div>
                                 <div>
@@ -82,12 +73,9 @@
                                                      <input type="hidden"
                                                             value="{{ object.id }}"
                                                             name="id">
-
                                                      <a href="javascript:;"
                                                         onclick="document.getElementById('{{ object.id }}').submit();">
-
                                                          <i class="fa fa-heart fa-3x"></i>
-
                                                      </a>
                                                  </form>
                                              {% else %}
@@ -96,21 +84,15 @@
                                                      <input type="hidden"
                                                             value="{{ object.id }}"
                                                             name="id">
-
                                                      <a href="javascript:;"
                                                         onclick="document.getElementById('{{ object.id }}').submit();">
-
                                                          <i class="fa fa-heart-o fa-3x"></i>
-
                                                      </a>
                                                  </form>
                                              {% endif %}
-
                                          </li>
-
                                      </ul>
 								</span>
-
                             </div><!--/product-information-->
                         </div>
                     </div><!--/product-details-->
@@ -126,40 +108,14 @@
                         <div class="tab-content">
                             <div class="tab-pane fade" id="details">
                                 <div class="col-sm-12">
-
                                     {{ object.description }}
-
                                 </div>
-
                             </div>
-
-
                             <div class="tab-pane fade active in" id="reviews">
                                 <div class="col-sm-12">
-                                    {% if user_comments %}
-                                        {% for comment in user_comments %}
-                                            <ul>
-                                                <li><a href=""><i
-                                                        class="fa fa-user"></i>{{ comment.user.get_full_name }}</a></li>
-                                                <li><a href=""><i
-                                                        class="fa fa-clock-o"></i>{{ comment.date|date:'g:i  a' }}</a>
-                                                </li>
-                                                <li><a href=""><i
-                                                        class="fa fa-calendar-o"></i>{{ comment.date|date:'j - b - Y' }}
-                                                </a></li>
-                                            </ul>
-                                            <p><b>{{ comment.title }}</b></p>
-                                            <p>{{ comment.text }}</p>
-                                            <hr>
-                                        {% endfor %}
-                                    {% else %}
+                                    {% if user_commented %}<!--comment form-->
                                         <div class="alert alert-danger" role="alert">
-                                            هیچ دیدگاهی برای این محصول ثبت نشده
-                                        </div>
-                                    {% endif %}
-                                    {% if user_commented %}
-                                        <div class="alert alert-danger" role="alert">
-                                            شما قبلا نر خود را برای این محصول ثبت نموده اید.
+                                            شما قبلا نظر خود را برای این محصول ثبت نموده اید.
                                         </div>
                                     {% elif request.user.is_authenticated %}
                                         <p><strong>نظـر خود را بنویسیـد</strong></p>
@@ -174,13 +130,68 @@
                                             <button type="submit" class="btn btn-default pull-right">
                                                 ارسـال
                                             </button>
-                                        </form>
 
+                                        </form>
                                     {% else %}
                                         <div class="alert alert-danger" role="alert">
                                             برای ثبت دیدگاه خود لطفا وارد شوید.
                                         </div>
+                                    {% endif %}<!--comment form-->
+<br>
+<br>
+<br>
+                                    {% if user_commented %}
+                                        {% for comment in paginator.object_list %}
+                                            <ul>
+                                                <li><a href=""><i
+                                                        class="fa fa-user"></i>
+                                                    {% if comment.user.get_full_name %}
+                                                        {{ comment.user.get_full_name }}{% else %}کاربر
+                                                        بی نام {% endif %}
+                                                </a>
+                                                </li>
+                                                <li><a href=""><i
+                                                        class="fa fa-clock-o"></i>{{ comment.date|date:'g:i  a' }}
+                                                </a>
+                                                </li>
+                                                <li><a href=""><i
+                                                        class="fa fa-calendar-o"></i>{{ comment.object_list.date|date:'j - b - Y' }}
+                                                </a></li>
+                                            </ul>
+                                            <p><b>{{ comment.title }}</b></p>
+                                            <p>{{ comment.text }}</p>
+                                            <hr>
+
+                                        {% endfor %}
+
+                                        <div class="clearfix"></div><!--pagination-->
+                                        <ul class="pagination">
+                                            {% if paginator.has_previous %}
+                                                <li><a href="?page={{ paginator.previous_page_number }}">قبلی</a>
+                                                </li>
+
+                                            {% endif %}
+                                            {% for page in paginator_range %}
+                                                {% if page == paginator.number %}
+                                                    <li class="active"><a href="?page={{ page }}">{{ page }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li><a href="?page={{ page }}">{{ page }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if paginator.has_next %}
+                                                <li><a href="?page={{ paginator.next_page_number }}">بعدی</a></li>
+
+                                            {% endif %}
+
+                                        </ul><!--pagination-->
+
+                                    {% else %}
+                                        <div class="alert alert-danger" role="alert">
+                                            هیچ دیدگاهی برای این محصول ثبت نشده است.
+                                        </div>
                                     {% endif %}
+
                                 </div>
                             </div>
 
