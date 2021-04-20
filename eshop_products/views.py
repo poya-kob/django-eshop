@@ -27,6 +27,7 @@ class ProductsList(ListView):
         for Tuple in list(user_favorite_list):
             user_favorite_product.append(Tuple[0])
         context['favorite_list'] = user_favorite_product
+        context['title'] = 'لیست محصولات | فروشگاه آزمایشی'
         return context
 
 
@@ -100,7 +101,8 @@ def product_detail(request, *args, **kwargs):
         'total_comments': total_comments,
         'user_commented': user_commented,
         'paginator': page_obj,
-        'paginator_range': paginator.page_range
+        'paginator_range': paginator.page_range,
+        'title': 'جزئیات محصول | فروشگاه آزمایشی '
     }
 
     return render(request, 'products/product_detail.html', context)

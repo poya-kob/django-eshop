@@ -18,6 +18,7 @@ def contact_page(request):
         contact_form = ContactUsForm()
     context = {
         'setting': setting,
-        'contact_form': contact_form
+        'contact_form': contact_form,
+        'title': 'تماس با ما | فروشگاه آزمایشی'
     }
     return render(request, 'contact-us/contact_us_page.html', context)

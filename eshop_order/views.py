@@ -28,7 +28,8 @@ def add_user_order(request):
 def user_open_order(request):
     context = {
         'order': None,
-        'details': None
+        'details': None,
+        'title': 'سبد خرید | فروشگاه آزمایشی'
 
     }
 

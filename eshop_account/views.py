@@ -14,7 +14,8 @@ def login_page(request):
 
     login_form = LoginForm(request.POST or None)
     context = {
-        'login_form': login_form
+        'login_form': login_form,
+        'title': 'ورود | فروشگاه آزمایشی'
     }
     if login_form.is_valid():
         username = login_form.cleaned_data.get('user_name')
@@ -40,6 +41,7 @@ def register_page(request):
 
     context = {
         'register_form': register_form,
+        'title': 'ثبت نام | فروشگاه آزمایشی'
     }
     return render(request, 'account/register.html', context)
 
@@ -57,7 +59,8 @@ def favorite_page(request):
     print(page_obj.count())
     # print(user_favorites)
     context = {
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'title': 'لیست علاقه مندی ها | فروشگاه آزمایشی'
     }
 
     return render(request, 'account/user_favorite_products.html', context)

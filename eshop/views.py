@@ -38,7 +38,8 @@ def home_page(request):
         "sliders": slider,
         "most_visited_products": gallery_grouper(4, most_visited_products),
         "last_products": gallery_grouper(4, last_products),
-        "favorite_list": user_favorite_product
+        "favorite_list": user_favorite_product,
+        "title": "صفحه اصلی | فروشگاه آزمایشی"
 
     }
     return render(request, "home_page.html", context)
@@ -47,6 +48,7 @@ def home_page(request):
 def about_page(request):
     setting: Setting = Setting.objects.last()
     context = {
-        'setting': setting
+        'setting': setting,
+        'title': 'درباره ما | فروشگاه آزمایشی'
     }
     return render(request, 'about_page.html', context)
