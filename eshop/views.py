@@ -7,8 +7,10 @@ from eshop_account.models import Favorite
 
 
 def header(request, *args, **kwargs):
+    setting = Setting.objects.last()
     context = {
-        'title': 'new title'
+        'title': 'new title',
+        'setting': setting
     }
     return render(request, 'shared/Header.html', context)
 

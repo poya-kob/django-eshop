@@ -27,3 +27,5 @@ def upload_image_path(instance, filename):
         return f"product/{date.year}/{date.month}/{date.day}/{new_name}"
     elif type(instance).__name__ == "Blog":
         return f"Blog/{date.year}/{date.month}/{date.day}/{new_name}"
+    elif type(instance).__name__ == "Setting":
+        return f"Setting/{date.year}/{date.month}/{date.day}/{new_name}"

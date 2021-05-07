@@ -1,4 +1,5 @@
 from django.db import models
+from eshop.utils import upload_image_path
 
 
 class Setting(models.Model):
@@ -9,6 +10,7 @@ class Setting(models.Model):
     email = models.EmailField(max_length=50, verbose_name="ایمیل")
     copyright = models.CharField(max_length=50, verbose_name="کپی رایت")
     about_us = models.TextField(verbose_name="درباره سایت")
+    logo = models.ImageField(upload_to=upload_image_path, verbose_name='تصویر لکو سایت', default=None, null=True)
 
     # todo:add image field for logo
     class Meta:
