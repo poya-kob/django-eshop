@@ -8,6 +8,8 @@ from captcha.fields import ReCaptchaField, ReCaptchaV2Checkbox
 class FormWithCaptcha(forms.Form):
     captcha = ReCaptchaField(
         label='تصویر امنیتی',
-        widget=ReCaptchaV2Checkbox(api_params={'hl': 'fa'}),
-        error_messages="بر روی تصویر زیر کلیک کنید"
+        widget=ReCaptchaV2Checkbox(api_params={
+            'hl': 'fa'
+        }),
+        error_messages={"required": "لطفا بر روی من ربات نیستم کلیک کنید"}
     )
