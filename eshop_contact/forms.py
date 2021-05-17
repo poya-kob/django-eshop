@@ -1,8 +1,9 @@
 from django import forms
 from django.core import validators
+from utilities.BaseFormWithCaptia import FormWithCaptcha
 
 
-class ContactUsForm(forms.Form):
+class ContactUsForm(FormWithCaptcha):
     full_name = forms.CharField(
         label='نام و نام خانوادگی',
         widget=forms.TextInput(attrs={'placeholder': 'نام و نام خانوادگی خود را وارد کنید', 'class': 'form-control'}),

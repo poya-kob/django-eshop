@@ -47,8 +47,12 @@
                                     <p class="text-danger"> {{ error }}</p>
                                 {% endfor %}
                             </div>
+                        <div>
+                            {{ contact_form.captcha }}
+                        </div>
+<br>
                             <div class="form-group col-md-12">
-                                <input type="submit" name="submit" class="btn btn-primary pull-right" value="ارسـال">
+                                <input type="submit" name="submit" class="btn btn-primary pull-left" value="ارسـال">
                             </div>
                         </form>
                     </div>
