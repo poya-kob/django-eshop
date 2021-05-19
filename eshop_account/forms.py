@@ -1,9 +1,10 @@
 from django import forms
 from django.core import validators
 from django.contrib.auth.models import User
+from utilities.BaseFormWithCaptia import FormWithCaptcha
 
 
-class LoginForm(forms.Form):
+class LoginForm(FormWithCaptcha):
     user_name = forms.CharField(
         label='نام کاربری',
         widget=forms.TextInput(attrs={'placeholder': 'نام کاربری خود را وارد کنید'})
@@ -16,7 +17,7 @@ class LoginForm(forms.Form):
     )
 
 
-class RegisterForm(forms.Form):
+class RegisterForm(FormWithCaptcha):
     user_name = forms.CharField(
         label='نام کاربری',
         widget=forms.TextInput(attrs={'placeholder': 'نام کاربری خود را وارد کنید'}),

@@ -9,7 +9,12 @@
                         <h2>ورود به حساب کاربـری :</h2>
                         <form method="post">
                             {% csrf_token %}
-                            {{ login_form }}
+                           <label for="{{ login_form.user_name.id_for_label }}">{{ login_form.user_name.label }}</label>
+                            {{ login_form.user_name }}
+                            <label for="{{ login_form.password.id_for_label }}">{{ login_form.password.label }}</label>
+                            {{ login_form.password }}
+                            <label for="{{ login_form.captcha.id_for_label }}">{{ login_form.captcha.label }}</label>
+                            {{ login_form.captcha }}
                             <span>
 								<input type="checkbox" class="checkbox">
 								مرا بخاطـر بسپـار
@@ -17,6 +22,7 @@
                             <span>
 								<a href="forget-password.html">رمـز عبـور خود را فراموش کرده ام</a>
 							</span>
+
                             <button type="submit" class="btn btn-default">ورود</button>
                         </form>
                     </div><!--/login form-->
